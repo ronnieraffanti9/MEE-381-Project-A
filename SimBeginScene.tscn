@@ -1,0 +1,58 @@
+[gd_scene load_steps=11 format=3 uid="uid://b3u1hm45wxp72"]
+
+[ext_resource type="Script" path="res://SimBeginScene.cs" id="1_luaym"]
+[ext_resource type="Texture2D" uid="uid://cd4gwrrurbs6s" path="res://Textures/niu-huskies-2-logo-png-transparent-1599600036.png" id="2_hdnvh"]
+[ext_resource type="PackedScene" uid="uid://dgxwvehspcn4u" path="res://Models381/SpringModel.tscn" id="3_mm368"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2s17t"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_23q2q"]
+sky_material = SubResource("ProceduralSkyMaterial_2s17t")
+
+[sub_resource type="Environment" id="Environment_y3c4g"]
+background_mode = 2
+sky = SubResource("Sky_23q2q")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w718g"]
+albedo_texture = ExtResource("2_hdnvh")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u45ni"]
+material = SubResource("StandardMaterial3D_w718g")
+size = Vector2(4, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u42m2"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_d25wh"]
+radius = 0.1
+height = 0.2
+
+[node name="SimBeginScene" type="Node3D"]
+script = ExtResource("1_luaym")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_y3c4g")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_u45ni")
+
+[node name="Anchor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38873, 0)
+mesh = SubResource("BoxMesh_u42m2")
+
+[node name="Ball1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.433141, 0.573372, -0.473337)
+mesh = SubResource("SphereMesh_d25wh")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.587782, 0.631928, 1.68)
+
+[node name="SpringModel" parent="." instance=ExtResource("3_mm368")]
