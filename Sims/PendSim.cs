@@ -10,7 +10,7 @@ public class PendSim : Simulator
 
     public PendSim() : base(6)
     {
-        k = 1.0;
+        k = 10.0;
         m = 1.0;
         g = 9.81;
         l_0 = 0.9;
@@ -43,11 +43,11 @@ public class PendSim : Simulator
 
         // Equations of motion
         ff[0] = u2; // dx/dt = v_x
-        ff[1] = -springForce * u1 / L; // dv_x/dt
+        ff[1] = (-springForce * u1) / (L * m); // dv_x/dt
         ff[2] = u4; // dy/dt = v_y
-        ff[3] = (-springForce * u3 - m * g) / m; // dv_y/dt
+        ff[3] = ((-springForce * u3) / (L * m)) - g ; // dv_y/dt
         ff[4] = u6; // dz/dt = v_z
-        ff[5] = -springForce * u5 / L; // dv_z/dt
+        ff[5] = (-springForce * u5) / (L * m); // dv_z/dt
     }
 
     public float xCoord{
