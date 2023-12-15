@@ -29,7 +29,7 @@ public class PendSim : Simulator
 //----------------------------------------------------
     private void RHSFuncPendulum(double[] xx, double t, double[] ff)
     {
-        // Unpack state variables
+        // Unpack variables for clarity
         double u1 = xx[0]; // x
         double u2 = xx[1]; // v_x
         double u3 = xx[2]; // y
@@ -37,19 +37,17 @@ public class PendSim : Simulator
         double u5 = xx[4]; // z
         double u6 = xx[5]; // v_z
 
-        // Compute spring length
-        double L = Math.Sqrt(u1 * u1 + (u3 - 1.2) * (u3 - 1.2) + u5 * u5);
-
-        // Compute spring force
-        double fs = k * (L - l_0);
+        // Compute L and spring force
+        double L = Math.Sqrt(u1 * u1 + u3 * u3 + u5 * u5);
+        double springForce = k * (L - l_0) / m;
 
         // Equations of motion
         ff[0] = u2; // dx/dt = v_x
-        ff[1] = (fs * u1) / (m * L); // dv_x/dt
+        ff[1] = -springForce * u1 / L; // dv_x/dt
         ff[2] = u4; // dy/dt = v_y
-        ff[3] = (fs * u3) / (m * L) - g; // dv_y/dt
+        ff[3] = (-springForce * u3 - m * g) / m; // dv_y/dt
         ff[4] = u6; // dz/dt = v_z
-        ff[5] = (fs * u5) / (m * L); // dv_z/dt
+        ff[5] = -springForce * u5 / L; // dv_z/dt
     }
 
     public float xCoord{
@@ -70,7 +68,7 @@ public class PendSim : Simulator
     }
     public double kE{
         get{
-            double velocity = Math.Sqrt(x[1]*x[1] + x[3]*x[3] + x[5]*x[5]);
+            double velocity = Math.Sqrt(Math.Abs(x[1]*x[1]) + Math.Abs(x[3]*x[3]) + Math.Abs(x[5]*x[5]));
             return(.5 * m * velocity * velocity);
         }
     }
@@ -79,7 +77,7 @@ public class PendSim : Simulator
             double L = Math.Sqrt(x[0] * x[0] + x[2] * x[2] + x[4] * x[4]);
             double deltaL = L - l_0;
             double springPotental = deltaL * deltaL * k * .5;
-            double gravityPotental = m * g * x[2];
+            double gravityPotental = m * g * (x[2]+10);
             return(springPotental + gravityPotental);
         }
     }

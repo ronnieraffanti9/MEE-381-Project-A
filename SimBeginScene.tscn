@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://b3u1hm45wxp72"]
+[gd_scene load_steps=12 format=3 uid="uid://b3u1hm45wxp72"]
 
 [ext_resource type="Script" path="res://SimBeginScene.cs" id="1_luaym"]
 [ext_resource type="Texture2D" uid="uid://cd4gwrrurbs6s" path="res://Textures/niu-huskies-2-logo-png-transparent-1599600036.png" id="2_hdnvh"]
 [ext_resource type="PackedScene" uid="uid://dgxwvehspcn4u" path="res://Models381/SpringModel.tscn" id="3_mm368"]
+[ext_resource type="Script" path="res://Utils/UIPanelDisplay.cs" id="3_yorqd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2s17t"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -56,3 +57,18 @@ mesh = SubResource("SphereMesh_d25wh")
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.587782, 0.631928, 1.68)
 
 [node name="SpringModel" parent="." instance=ExtResource("3_mm368")]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 0
+offset_right = 151.0
+offset_bottom = 35.0
+
+[node name="DataDisplay" type="PanelContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+script = ExtResource("3_yorqd")

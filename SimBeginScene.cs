@@ -16,6 +16,8 @@ public partial class SimBeginScene : Node3D
     Vector3 endA; // end point of anchor
     Vector3 endB; // end point for pendulum bob
     // Called when the node enters the scene tree for the first time.
+
+    UIPanelDisplay dataDisplay;
     public override void _Ready()
     {
         GD.Print("Hello MEE 381 in Godot!");
@@ -36,10 +38,26 @@ public partial class SimBeginScene : Node3D
         PlacePendulum(endB);
         //PlacePendulum((float)angle);
         time = 0.0;
+
+        // set up the data display
+		dataDisplay = GetNode<UIPanelDisplay>("Control/MarginContainer/DataDisplay");
+		dataDisplay.SetNDisplay(4);
+		dataDisplay.SetLabel(0,"Pendulum");
+		dataDisplay.SetValue(0,"");
+		dataDisplay.SetLabel(1,"Kin. Energy");
+		dataDisplay.SetValue(1,"---");
+		dataDisplay.SetLabel(2,"Pot. Energy");
+		dataDisplay.SetValue(2,"---");
+		dataDisplay.SetLabel(3,"Tot. Energy");
+		dataDisplay.SetValue(3,"---");
     }
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
+        dataDisplay.SetValue(1,(float)pend.kE);//Kinetic Energy
+		dataDisplay.SetValue(2,(float)pend.pE);//Potental Energy
+		dataDisplay.SetValue(3,(float)pend.totalE);//Total Energy
+
         endB.X = endA.X + pend.xCoord;
         endB.Y = endA.Y + pend.yCoord;
         endB.Z = endA.Z + pend.zCoord;
