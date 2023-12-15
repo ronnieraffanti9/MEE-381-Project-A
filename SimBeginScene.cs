@@ -63,7 +63,7 @@ public partial class SimBeginScene : Node3D
         endB.Z = endA.Z + pend.zCoord;
         PlacePendulum(endB);
         time += delta;
-        GD.Print(pend.totalE);
+        GD.Print("Pot. Energy: " + Math.Round(pend.pE,2) + " Kin. Energy: " + Math.Round(pend.kE,2) + " Tot. energy: " + Math.Round(pend.totalE,2));
     }
     public override void _PhysicsProcess(double delta)
     {

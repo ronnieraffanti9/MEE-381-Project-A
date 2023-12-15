@@ -10,17 +10,17 @@ public class PendSim : Simulator
 
     public PendSim() : base(6)
     {
-        k = 10.0;
+        k = 1.0;
         m = 1.0;
         g = 9.81;
         l_0 = 0.9;
 
-        x[0] = 1.0; // default x
+        x[0] = 0.0; // default x
         x[1] = 0.0; // default v_x
         x[2] = 0.0; // default y
         x[3] = 0.0; // default v_y
-        x[4] = 1.0; // default z
-        x[5] = 1.0; // default v_z
+        x[4] = 0.9; // default z
+        x[5] = 0.0; // default v_z
         
         SetRHSFunc(RHSFuncPendulum);
     }
@@ -38,7 +38,7 @@ public class PendSim : Simulator
         double u6 = xx[5]; // v_z
 
         // Compute L and spring force
-        double L = Math.Sqrt(u1 * u1 + u3 * u3 + u5 * u5);
+        double L = Math.Sqrt(u1 * u1 + (u3 - 1.2) * (u3 - 1.2) + u5 * u5);
         double springForce = k * (L - l_0) / m;
 
         // Equations of motion
@@ -68,16 +68,16 @@ public class PendSim : Simulator
     }
     public double kE{
         get{
-            double velocity = Math.Sqrt(Math.Abs(x[1]*x[1]) + Math.Abs(x[3]*x[3]) + Math.Abs(x[5]*x[5]));
+            double velocity = Math.Sqrt(x[1]*x[1] + x[3]*x[3] + x[5]*x[5]);
             return(.5 * m * velocity * velocity);
         }
     }
     public double pE{
         get{
-            double L = Math.Sqrt(x[0] * x[0] + x[2] * x[2] + x[4] * x[4]);
-            double deltaL = L - l_0;
-            double springPotental = deltaL * deltaL * k * .5;
-            double gravityPotental = m * g * (x[2]+10);
+            double L = Math.Sqrt(x[0]*x[0] + (x[2] - 1.2)*(x[2] - 1.2) + x[4]*x[4]);
+            double deltaL = Math.Abs(L - l_0);
+            double springPotental = deltaL * k  * .5;
+            double gravityPotental = m * g * x[2];
             return(springPotental + gravityPotental);
         }
     }
